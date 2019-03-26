@@ -69,8 +69,7 @@ public class Controller{
   }
   
   
-  @SuppressWarnings("rawtypes")
-  public static void main(String[] asd) throws Exception{
+  public static void mainx(String[] asd) throws Exception{
     
     List<ArrayList<String>> apps=Lists.newArrayList(
       Lists.newArrayList("G","G","G","G","G","G"),
@@ -133,26 +132,45 @@ public class Controller{
     return null;
   }
   
+  
+  public static void main(String[] asd) throws Exception{
+  	Controller c=new Controller();
+  	
+  }
   @GET
   @Path("{path:.+}")
   public Response getProxy(@PathParam("path") String path, @Context HttpServletRequest request, @Context HttpServletResponse response) throws URISyntaxException, IOException{
   	String proxyUrl=getProperty("PATHFINDER_SERVER")+request.getRequestURI().replaceAll(request.getContextPath(), "");
-  	
+  	System.out.println("*****************************************************************");
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: url="+proxyUrl);
   	// Uncomment to add auth to querystring instead
 //	proxyUrl+=(proxyUrl.contains("?")?"&":"?")+"_t="+request.getParameter("_t");
+  	Map<String,String> headers=toMapBuilder(request).put("Authorization", request.getParameter("_t")).build();
+  	for (Entry<String, String> e:headers.entrySet())
+  		System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: Headers: "+e.getKey()+"="+e.getValue());
   	
   	io.restassured.response.Response resp = given()
-  			.headers(toMapBuilder(request).put("Authorization", request.getParameter("_t")).build())
+  			.headers(headers)
         .get(proxyUrl);
   	
-  	printRequestResponseInfo(request, proxyUrl, null, resp);
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Response code="+resp.getStatusCode());
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Response asString="+resp.asString());
+  	
+//  	printRequestResponseInfo(request, proxyUrl, null, resp);
+  	
+  	System.out.println("=================================================================");
   	
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
-  	for(Header h:resp.getHeaders())
+  	System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response code="+resp.getStatusCode());
+  	for(Header h:resp.getHeaders()){
   		rBuilder.header(h.getName(), h.getValue());
-  	return rBuilder.entity(resp.getBody().asString()).build();
+  		System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Request Headers: "+h.getName()+"="+h.getValue());
+  	}
+  	String body=resp.getBody().asString();
+  	System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response body="+body);
+  	System.out.println("*****************************************************************");
+  	return rBuilder.entity(body).build();
   }
-  
   
   @POST
   @Path("{path:.+}")
@@ -295,7 +313,7 @@ public class Controller{
         .post(getProperty("PATHFINDER_SERVER")+"/auth");
     
     if (loginResp.statusCode()!=200){
-    	log("Controller:login():: ERROR1 loginResp(code="+loginResp.statusCode()+").asString() = "+loginResp.asString());
+//    	log("Controller:login():: ERROR1 loginResp(code="+loginResp.statusCode()+").asString() = "+loginResp.asString());
     	log("Controller:login():: 3 OUT/ERROR loginResp(code="+loginResp.statusCode()+").asString() = "+loginResp.asString());
       String error="Username and/or password is unknown or incorrect"; // would grab the text from server side but spring wraps some debug info in there so until we can strip that we cant give details of failure
       return Response.status(302).location(new URI("../index.jsp?error="+URLEncoder.encode(error, "UTF-8"))).build();
@@ -307,8 +325,8 @@ public class Controller{
     String username=jsonResp.at("username").asString();
     String displayName=jsonResp.at("displayName").asString();
     
-    System.out.println("Controller::login():: jwt json response="+jsonResp.toString(99999999));
-    System.out.println("Controller::login():: jwtToken="+jwtToken);
+    log("Controller::login():: jwt json response="+jsonResp.toString(99999999));
+//    System.out.println("Controller::login():: jwtToken="+jwtToken);
     
     
     request.getSession().setAttribute("x-access-token", jwtToken);
