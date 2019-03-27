@@ -164,8 +164,10 @@ public class Controller{
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
   	System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response code="+resp.getStatusCode());
   	for(Header h:resp.getHeaders()){
-  		rBuilder.header(h.getName(), h.getValue());
-  		System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Request Headers: "+h.getName()+"="+h.getValue());
+  		if (!h.getName().startsWith("X-")){
+  		  rBuilder.header(h.getName(), h.getValue());
+  		  System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Request Headers: "+h.getName()+"="+h.getValue());
+  		}
   	}
   	String body=resp.getBody().asString();
   	System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response body="+body);
