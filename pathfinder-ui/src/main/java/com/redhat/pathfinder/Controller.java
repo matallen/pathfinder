@@ -271,28 +271,14 @@ public class Controller{
   private MapBuilder<String,String> toMapBuilder(HttpServletRequest request){
   	MapBuilder<String,String> result=new MapBuilder<>();
   	
-  	List<String> allowedHeaders=Lists.newArrayList(new String[]{"accept", "accept-encoding", "Authorization"});
+//  	List<String> allowedHeaders=Lists.newArrayList(new String[]{"accept", "accept-encoding", "Authorization"});
+  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"Content-Length"});
   	
   	for (Object key : Collections.list(request.getHeaderNames()))
 //  		if (!"Content-Length".equals(key))// && !"Origin".equals(key))
 
-  		if (allowedHeaders.contains((String)key))
+  		if (!bannedHeaders.contains((String)key))
   			result.put((String)key, request.getHeader((String)key));
-  	
-  	
-  	
-//  	result.values.remove("Content-Length");
-//  	result.values.remove("referer");
-//  	result.values.remove("accept-language");
-//  	result.values.remove("cookie");
-//  	result.values.remove("x-forwarded-proto");
-//  	result.values.remove("x-forwarded-port");
-//  	result.values.remove("pragma");
-//  	result.values.remove("x-forwarded-host");
-//  	result.values.remove("x-requested-with");
-//  	result.values.remove("referer");
-//  	result.values.remove("referer");
-//  	result.values.remove("referer");
   	
   	return result;
   }
