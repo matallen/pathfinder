@@ -270,10 +270,13 @@ public class Controller{
   
   private MapBuilder<String,String> toMapBuilder(HttpServletRequest request){
   	MapBuilder<String,String> result=new MapBuilder<>();
+  	
+  	List<String> allowedHeaders=Lists.newArrayList(new String[]{"accept", "accept-encoding", "Authorization"});
+  	
   	for (Object key : Collections.list(request.getHeaderNames()))
 //  		if (!"Content-Length".equals(key))// && !"Origin".equals(key))
 
-  		if (key.equals("Authorization") || key.equals("accept-encoding") || key.equals("accept"))
+  		if (allowedHeaders.contains((String)key))
   			result.put((String)key, request.getHeader((String)key));
   	
   	
