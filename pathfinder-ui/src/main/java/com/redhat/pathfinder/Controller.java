@@ -179,18 +179,27 @@ public class Controller{
   @Path("{path:.+}")
   public Response postProxy(@PathParam("path") String path, @Context HttpServletRequest request, @Context HttpServletResponse response) throws URISyntaxException, IOException{
   	String proxyUrl=getProperty("PATHFINDER_SERVER")+request.getRequestURI().replaceAll(request.getContextPath(), "");
+  	if (!proxyUrl.endsWith("/")) proxyUrl+="/"; //Spring really wants a slash at the end or the mapping doesnt work
   	String body=IOUtils.toString(request.getInputStream());
+  	System.out.println("*****************************************************************");
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: url="+proxyUrl);
+  	
+  	Map<String,String> headers=toMapBuilder(request).put("Authorization", request.getParameter("_t")).build();
+  	for (Entry<String, String> e:headers.entrySet())
+  		System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: Headers: "+e.getKey()+"="+e.getValue());
+  	
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request body="+body);
   	
   	io.restassured.response.Response resp = given()
-  			.headers(toMapBuilder(request).put("Authorization", request.getParameter("_t")).build())
+  			.headers(headers)
   			.body(body)
         .post(proxyUrl);
   	
   	printRequestResponseInfo(request, proxyUrl, body, resp);
   	
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
-  	for(Header h:resp.getHeaders())
-  		rBuilder.header(h.getName(), h.getValue());
+  	//for(Header h:resp.getHeaders())
+  	//	rBuilder.header(h.getName(), h.getValue());
   	return rBuilder.entity(resp.getBody().asString()).build();
   }
   
