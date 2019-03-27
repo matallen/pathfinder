@@ -271,7 +271,7 @@ public class Controller{
   	for (Object key : Collections.list(request.getHeaderNames()))
 //  		if (!"Content-Length".equals(key))// && !"Origin".equals(key))
 
-  		if (key.equals("Authorization") || key.equals("host") || key.equals("accept-encoding") || key.equals("user-agent") || key.equals("accept"))
+  		if (key.equals("Authorization") || key.equals("accept-encoding") || key.equals("accept"))
   			result.put((String)key, request.getHeader((String)key));
   	
   	
