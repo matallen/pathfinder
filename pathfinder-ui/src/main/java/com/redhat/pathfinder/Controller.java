@@ -163,7 +163,9 @@ public class Controller{
   	
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
   	System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response code="+resp.getStatusCode());
-  	//for(Header h:resp.getHeaders()){
+  	for(Header h:resp.getHeaders())
+  		if (h.getName().equalsIgnoreCase("cookie"))
+  			rBuilder.header(h.getName(), h.getValue());
   	//	if (!h.getName().startsWith("X-") && !h.getName().equals("connection") && !h.getName().equals("Content-Encoding") && !h.getName().equals("Expires")){
   	//	  rBuilder.header(h.getName(), h.getValue());
   	//	  System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response Headers: "+h.getName()+"="+h.getValue());
@@ -198,7 +200,9 @@ public class Controller{
 //  	printRequestResponseInfo(request, proxyUrl, body, resp);
   	
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
-  	//for(Header h:resp.getHeaders())
+  	for(Header h:resp.getHeaders())
+  		if (h.getName().equalsIgnoreCase("cookie"))
+  			rBuilder.header(h.getName(), h.getValue());
   	//	rBuilder.header(h.getName(), h.getValue());
   	return rBuilder.entity(resp.getBody().asString()).build();
   }
@@ -209,21 +213,29 @@ public class Controller{
   	String proxyUrl=getProperty("PATHFINDER_SERVER")+request.getRequestURI().replaceAll(request.getContextPath(), "");
   	if (!proxyUrl.endsWith("/")) proxyUrl+="/"; //Spring really wants a slash at the end or the mapping doesnt work
   	String body=IOUtils.toString(request.getInputStream());
-  	
+
+  	System.out.println("*****************************************************************");
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: url="+proxyUrl);
+
   	Map<String, String> headers=new HashMap<>();
   	for(Object key:Collections.list(request.getHeaderNames())){
   		headers.put((String)key, request.getHeader((String)key));
-  		System.out.println("Browser->UI::request.header('"+key+"')="+request.getHeader((String)key));
+  		System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: Headers: "+key+"="+request.getHeader((String)key));
   	}
+  	
+  	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request body="+body);
+  	
   	headers.put("Authorization", request.getParameter("_t"));
-  	headers.remove("Pragma");
-  	headers.remove("Cache-Control");
-  	headers.remove("Cookie");
-  	headers.remove("Host");
+//  	headers.remove("Pragma");
+//  	headers.remove("Cache-Control");
+//  	headers.remove("Cookie");
+//  	headers.remove("Host");
   	headers.remove("Content-Length");
-  	headers.put("Host", "localhost:8080");
+  	headers.remove("content-length");
+//  	headers.put("Host", "localhost:8080");
   	for(Entry<String, String> e:headers.entrySet()){
-  		System.out.println("UI->Server::request.header('"+e.getKey()+"')="+request.getHeader((String)e.getKey()));
+//  		System.out.println("UI->Server::request.header('"+e.getKey()+"')="+request.getHeader((String)e.getKey()));
+  		System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: Headers: "+e.getKey()+"="+request.getHeader((String)e.getKey()));
   	}
   	
   	URL url = new URL(proxyUrl);
@@ -282,12 +294,9 @@ public class Controller{
   private MapBuilder<String,String> toMapBuilder(HttpServletRequest request){
   	MapBuilder<String,String> result=new MapBuilder<>();
   	
-//  	List<String> allowedHeaders=Lists.newArrayList(new String[]{"accept", "accept-encoding", "Authorization"});
   	List<String> bannedHeaders=Lists.newArrayList(new String[]{"content-length","Content-Length", "cookie","referer","forwarded","x-requested-with","x-forwarded-host","x-forwarded-port","host","x-forwarded-proto","user-agent"});
   	
   	for (Object key : Collections.list(request.getHeaderNames()))
-//  		if (!"Content-Length".equals(key))// && !"Origin".equals(key))
-
   		if (!bannedHeaders.contains((String)key))
   			result.put((String)key, request.getHeader((String)key));
   	
