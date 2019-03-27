@@ -164,9 +164,9 @@ public class Controller{
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
   	System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response code="+resp.getStatusCode());
   	for(Header h:resp.getHeaders()){
-  		if (!h.getName().startsWith("X-")){
+  		if (!h.getName().startsWith("X-") && !h.getName().equals("connection") && !h.getName().equals("Content-Encoding") && !h.getName().equals("Expires")){
   		  rBuilder.header(h.getName(), h.getValue());
-  		  System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Request Headers: "+h.getName()+"="+h.getValue());
+  		  System.out.println("PROXY::UI->BRWSR("+request.getMethod()+"): Response Headers: "+h.getName()+"="+h.getValue());
   		}
   	}
   	String body=resp.getBody().asString();
