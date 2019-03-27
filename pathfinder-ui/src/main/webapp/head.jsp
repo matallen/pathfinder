@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 
 	  <script src="assets/js/jquery-3.3.1.min.js"></script>
-	  <script src="utils.jsp"></script>
+	  <script src="assets/utils.jsp"></script>
 	  <script>
 	  	var jwtToken = "<%=session.getAttribute("x-access-token")!=null?session.getAttribute("x-access-token"):""%>";
 	  	var customerId=Utils.getParameterByName("customerId");

@@ -7,7 +7,7 @@
   <script src="assets/js/datatables-functions.js?v15"></script>
 	<script src="assets/js/dateFormat.min.js"></script>
 	
-	<script src="utils.jsp"></script>
+	<script src="assets/utils.jsp"></script>
 	
 	<style>
 		#example_filter label input{

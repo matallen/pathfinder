@@ -11,7 +11,7 @@
   -->
   <%@include file="datatables-dependencies.jsp"%>
 	<script src="assets/js/datatables-plugins.js"></script>
-	<script type="text/javascript" src="utils.jsp"></script>
+	<script type="text/javascript" src="assets/utils.jsp"></script>
 	<!-- for pie/line/bubble graphing -->
 	<!--
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>

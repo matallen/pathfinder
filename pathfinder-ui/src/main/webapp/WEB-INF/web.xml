@@ -40,6 +40,7 @@
   
   <!-- Filter to redirect timed out pages back to login page -->
   <!--
+  -->
   <filter>
     <filter-name>SessionTimeoutServletFilter</filter-name>
     <filter-class>com.redhat.pathfinder.SessionTimeoutServletFilter</filter-class>
@@ -49,7 +50,6 @@
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  -->
   
   <session-config>
     <session-timeout>60</session-timeout>

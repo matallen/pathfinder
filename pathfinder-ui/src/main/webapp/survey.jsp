@@ -90,9 +90,6 @@
 				}
 				/* /change to add question weighting colors to left of radio buttons */
 			</style>
-			<!--
-			<script src="utils.jsp"></script>
-			-->
 			<script>
 				var results=null;
 				if (null!=Utils.getParameterByName("assessmentId")){

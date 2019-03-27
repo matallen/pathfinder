@@ -277,19 +277,19 @@ public class Controller{
 //  		rBuilder.header(h.getName(), h.getValue());
 //  	return rBuilder.entity(resp.getBody().asString()).build();
   }
-  
-  private void printRequestResponseInfo(HttpServletRequest request, String proxyUrl, String body, io.restassured.response.Response resp) throws IOException{
-  	System.out.println("Proxy:: "+request.getMethod()+":: "+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+""+request.getRequestURI() +" => "+ proxyUrl +" (status="+resp.getStatusCode()+")");
-  	System.out.println("Proxy:: "+request.getMethod()+":: Headers:");
-  	for (Object key : Collections.list(request.getHeaderNames()))
-  	  System.out.println("Proxy:: "+request.getMethod()+"::   - "+key+"="+request.getHeader((String)key));
-  	
-  	for(Header header:resp.getHeaders().asList())
-  		System.out.println("Proxy:: resp:: "+header);
-  	
-	  if (null!=body) System.out.println("Proxy:: "+request.getMethod()+":: Body = "+body);
-	  System.out.println("Proxy:: "+request.getMethod()+":: Response String = "+resp.getBody().asString());
-  }
+//  
+//  private void printRequestResponseInfo(HttpServletRequest request, String proxyUrl, String body, io.restassured.response.Response resp) throws IOException{
+//  	System.out.println("Proxy:: "+request.getMethod()+":: "+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+""+request.getRequestURI() +" => "+ proxyUrl +" (status="+resp.getStatusCode()+")");
+//  	System.out.println("Proxy:: "+request.getMethod()+":: Headers:");
+//  	for (Object key : Collections.list(request.getHeaderNames()))
+//  	  System.out.println("Proxy:: "+request.getMethod()+"::   - "+key+"="+request.getHeader((String)key));
+//  	
+//  	for(Header header:resp.getHeaders().asList())
+//  		System.out.println("Proxy:: resp:: "+header);
+//  	
+//	  if (null!=body) System.out.println("Proxy:: "+request.getMethod()+":: Body = "+body);
+//	  System.out.println("Proxy:: "+request.getMethod()+":: Response String = "+resp.getBody().asString());
+//  }
   
   private MapBuilder<String,String> toMapBuilder(HttpServletRequest request){
   	MapBuilder<String,String> result=new MapBuilder<>();
