@@ -36,6 +36,7 @@ public class SessionTimeoutServletFilter implements javax.servlet.Filter{
 		
 		if (!isAsset && !hasJwt && !isLoginPage && !isExempt){
 			resp.sendRedirect(ctx.getContextPath()+"/index.jsp");
+			return;
 		}
 		
 		chain.doFilter(request, response);
