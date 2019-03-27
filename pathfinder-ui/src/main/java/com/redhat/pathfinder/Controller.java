@@ -141,6 +141,7 @@ public class Controller{
   @Path("{path:.+}")
   public Response getProxy(@PathParam("path") String path, @Context HttpServletRequest request, @Context HttpServletResponse response) throws URISyntaxException, IOException{
   	String proxyUrl=getProperty("PATHFINDER_SERVER")+request.getRequestURI().replaceAll(request.getContextPath(), "");
+  	if (!proxyUrl.endsWith("/")) proxyUrl+="/"; //Spring really wants a slash at the end or the mapping doesnt work
   	System.out.println("*****************************************************************");
   	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: url="+proxyUrl);
   	// Uncomment to add auth to querystring instead
@@ -195,6 +196,7 @@ public class Controller{
   @Path("{path:.+}")
   public Response deleteProxy(@PathParam("path") String path, @Context HttpServletRequest request, @Context HttpServletResponse response) throws URISyntaxException, IOException{
   	String proxyUrl=getProperty("PATHFINDER_SERVER")+request.getRequestURI().replaceAll(request.getContextPath(), "");
+  	if (!proxyUrl.endsWith("/")) proxyUrl+="/"; //Spring really wants a slash at the end or the mapping doesnt work
   	String body=IOUtils.toString(request.getInputStream());
   	
   	Map<String, String> headers=new HashMap<>();
