@@ -272,7 +272,7 @@ public class Controller{
   	MapBuilder<String,String> result=new MapBuilder<>();
   	
 //  	List<String> allowedHeaders=Lists.newArrayList(new String[]{"accept", "accept-encoding", "Authorization"});
-  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"Content-Length", "cookie","referer","forwarded","x-requested-with","x-forwarded-host"});
+  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"Content-Length", "cookie","referer","forwarded","x-requested-with","x-forwarded-host","x-forwarded-port","host","x-forwarded-proto","user-agent"});
   	
   	for (Object key : Collections.list(request.getHeaderNames()))
 //  		if (!"Content-Length".equals(key))// && !"Origin".equals(key))
