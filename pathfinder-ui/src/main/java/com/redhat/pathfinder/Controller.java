@@ -220,7 +220,7 @@ public class Controller{
   	Map<String, String> headers=new HashMap<>();
   	for(Object key:Collections.list(request.getHeaderNames())){
   		headers.put((String)key, request.getHeader((String)key));
-  		System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: Headers: "+key+"="+request.getHeader((String)key));
+//  		System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request: Headers: "+key+"="+request.getHeader((String)key));
   	}
   	
   	System.out.println("PROXY::UI->SVR("+request.getMethod()+"): Request body="+body);
@@ -294,7 +294,7 @@ public class Controller{
   private MapBuilder<String,String> toMapBuilder(HttpServletRequest request){
   	MapBuilder<String,String> result=new MapBuilder<>();
   	
-  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"content-length","Content-Length", "cookie","referer","forwarded","x-requested-with","x-forwarded-host","x-forwarded-port","host","x-forwarded-proto","user-agent"});
+  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"content-length","Content-Length", "referer","forwarded","x-requested-with","x-forwarded-host","x-forwarded-port","host","x-forwarded-proto","user-agent"});
   	
   	for (Object key : Collections.list(request.getHeaderNames()))
   		if (!bannedHeaders.contains((String)key))
