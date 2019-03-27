@@ -195,7 +195,7 @@ public class Controller{
   			.body(body)
         .post(proxyUrl);
   	
-  	printRequestResponseInfo(request, proxyUrl, body, resp);
+//  	printRequestResponseInfo(request, proxyUrl, body, resp);
   	
   	ResponseBuilder rBuilder=Response.status(resp.getStatusCode());
   	//for(Header h:resp.getHeaders())
@@ -283,7 +283,7 @@ public class Controller{
   	MapBuilder<String,String> result=new MapBuilder<>();
   	
 //  	List<String> allowedHeaders=Lists.newArrayList(new String[]{"accept", "accept-encoding", "Authorization"});
-  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"Content-Length", "cookie","referer","forwarded","x-requested-with","x-forwarded-host","x-forwarded-port","host","x-forwarded-proto","user-agent"});
+  	List<String> bannedHeaders=Lists.newArrayList(new String[]{"content-length","Content-Length", "cookie","referer","forwarded","x-requested-with","x-forwarded-host","x-forwarded-port","host","x-forwarded-proto","user-agent"});
   	
   	for (Object key : Collections.list(request.getHeaderNames()))
 //  		if (!"Content-Length".equals(key))// && !"Origin".equals(key))
